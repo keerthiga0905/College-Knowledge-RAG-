@@ -1,0 +1,48 @@
+===================================================================
+COIMBATORE INSTITUTE OF TECHNOLOGY (CIT), COIMBATORE
+ACADEMIC REGULATIONS, ATTENDANCE & EXAMINATION RULES 2026
+===================================================================
+
+1. CHOICE BASED CREDIT SYSTEM (CBCS)
+CIT Coimbatore follows the Choice Based Credit System (CBCS) for all undergraduate (B.E. / B.Tech) and postgraduate (M.E. / M.Tech / MCA) degree programs.
+- Minimum credit requirements for B.E. / B.Tech (4 Years): 160 to 165 Credits.
+- Lateral Entry B.E. / B.Tech (3 Years): 120 to 125 Credits.
+- M.E. / M.Tech (2 Years): 70 to 75 Credits.
+- MCA (2 Years): 80 to 85 Credits.
+
+2. MANDATORY ATTENDANCE REQUIREMENTS
+- Minimum Attendance: Every student must secure a minimum of 75% attendance in aggregate of all courses in a semester to be eligible to appear for the End Semester Theory and Practical Examinations.
+- Condonation of Attendance (65% to 74%):
+  Condonation of shortage of attendance between 65% and 74% may be granted by the Principal on genuine medical grounds (supported by medical certificate from a registered medical practitioner) or participation in official sports/NSS/NCC events. Condonation fee as prescribed by the institution must be paid.
+- Below 65% Attendance:
+  Students securing less than 65% attendance are NOT eligible to appear for semester examinations under any circumstances. They are detained and must re-register and repeat the semester in the subsequent academic year.
+
+3. CONTINUOUS ASSESSMENT & EVALUATION SYSTEM
+Assessment Weightage:
+- Continuous Assessment Tests (CAT / Internal Evaluation): 40% Weightage.
+- End Semester Theory & Practical Examination: 60% Weightage.
+
+Internal Assessment Components (40 Marks):
+- Continuous Assessment Test 1 (CAT 1): 15 Marks.
+- Continuous Assessment Test 2 (CAT 2): 15 Marks.
+- Assignments / Quizzes / Seminar / Mini Project: 10 Marks.
+
+4. GRADING SYSTEM & CGPA CALCULATION
+Letter Grades and Grade Points:
+- O (Outstanding): Grade Point 10 (90 - 100 Marks)
+- A+ (Excellent): Grade Point 9 (80 - 89 Marks)
+- A (Very Good): Grade Point 8 (70 - 79 Marks)
+- B+ (Good): Grade Point 7 (60 - 69 Marks)
+- B (Average): Grade Point 6 (50 - 59 Marks)
+- C (Satisfactory): Grade Point 5 (45 - 49 Marks)
+- RA (Re-appear / Fail): Grade Point 0 (< 45 Marks)
+- W (Withdrawn): 0
+
+Formula:
+- SGPA (Semester Grade Point Average) = SUM(Credit * Grade Point) / SUM(Credits in Semester)
+- CGPA (Cumulative Grade Point Average) = SUM(Credit * Grade Point) / SUM(Total Credits Earned)
+
+5. REVALUATION & ARREAR EXAMINATIONS
+- Arrear Examinations: Conducted during regular semester exam periods (Odd semester arrears in Nov/Dec, Even semester arrears in April/May).
+- Supplementary Examinations: Conducted for final year students after 8th semester to enable early completion of degree.
+- Revaluation Procedure: Students can apply for photocopy of answer scripts within 7 days of results declaration. Revaluation applications must be submitted with prescribed fee per paper to the Office of Controller of Examinations (COE).

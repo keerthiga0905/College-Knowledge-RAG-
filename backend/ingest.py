@@ -90,7 +90,7 @@ def run_ingestion(reset: bool = False, dry_run: bool = False):
             f
             for f in cat_path.rglob("*")
             if f.is_file()
-            and f.suffix.lower() in [".pdf", ".docx", ".doc"]
+            and f.suffix.lower() in [".pdf", ".docx", ".doc", ".txt", ".md", ".json", ".html", ".htm"]
         ]
 
         all_found_files.extend(

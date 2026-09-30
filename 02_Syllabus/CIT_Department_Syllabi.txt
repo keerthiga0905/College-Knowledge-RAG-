@@ -1,0 +1,78 @@
+===================================================================
+COIMBATORE INSTITUTE OF TECHNOLOGY (CIT), COIMBATORE
+CURRICULUM & SYLLABUS OVERVIEW FOR BE / BTECH COURSES
+===================================================================
+
+1. B.E. COMPUTER SCIENCE AND ENGINEERING (CSE) & B.E. CSE (AIML)
+Semester I:
+- Professional English & Communication
+- Matrices and Calculus
+- Engineering Physics
+- Engineering Chemistry
+- Python Programming & Problem Solving
+- Python Programming Laboratory
+- Physics and Chemistry Laboratory
+
+Semester II:
+- Technical English
+- Differential Equations & Complex Variables
+- Basic Electrical & Electronics Engineering
+- Programming in C & Data Structures
+- Engineering Graphics
+- Data Structures Laboratory
+
+Semester III:
+- Discrete Mathematics & Graph Theory
+- Object Oriented Programming in C++/Java
+- Digital Logic Design & Computer Architecture
+- Database Management Systems (DBMS)
+- Software Engineering & Agile Principles
+- DBMS & OOP Laboratory
+
+Semester IV:
+- Probability, Statistics & Random Processes
+- Design and Analysis of Algorithms
+- Operating Systems & Linux Architecture
+- Theory of Computation & Automata
+- Computer Networks & Protocols
+- Operating Systems & Networks Lab
+
+Semester V (3rd Year CSE & AIML):
+- Artificial Intelligence Principles & Search Strategies
+- Machine Learning Algorithms & Supervised/Unsupervised Learning
+- Web Technologies & Full Stack Frameworks
+- Computer Networks & Distributed Systems
+- Professional Elective I (Deep Learning / Cloud Computing / Cybersecurity)
+- AI & Machine Learning Laboratory
+- Web Development Laboratory
+
+Semester VI (3rd Year CSE & AIML):
+- Natural Language Processing (NLP) & Text Mining
+- Computer Vision & Image Processing
+- Big Data Analytics & Distributed Computing (Hadoop/Spark)
+- Open Elective I (Management / Humanities)
+- Professional Elective II (Reinforcement Learning / MLOps)
+- Mini Project & Innovation Lab
+
+Semester VII (4th Year CSE & AIML):
+- Deep Learning & Neural Networks
+- Information & Cyber Security
+- Professional Elective III & IV
+- Open Elective II
+- Project Work Phase-I
+
+Semester VIII (4th Year CSE & AIML):
+- Professional Elective V
+- Project Work Phase-II & Internship Demonstration
+
+2. B.E. ELECTRONICS AND COMMUNICATION ENGINEERING (ECE)
+- Key Subjects: Electronic Devices & Circuits, Signals and Systems, Analog & Digital Communication, Microprocessors & Microcontrollers (8051/ARM), VLSI Design, Embedded Systems, Antennas and Wave Propagation, Wireless Communication, RF Systems, Digital Signal Processing (DSP).
+
+3. B.E. ELECTRICAL AND ELECTRONICS ENGINEERING (EEE)
+- Key Subjects: Electric Circuit Analysis, Electromagnetic Fields, Electrical Machines I & II, Power Systems Analysis, Power Electronics, Control Systems, Microgrid Technology, High Voltage Engineering, Renewable Energy Systems.
+
+4. B.E. MECHANICAL ENGINEERING
+- Key Subjects: Engineering Mechanics, Thermodynamics, Manufacturing Technology, Kinematics & Dynamics of Machinery, Heat and Mass Transfer, Design of Machine Elements, Fluid Mechanics & Hydraulic Machinery, CAD/CAM/CIM, Mechatronics & Automation.
+
+5. B.E. CIVIL ENGINEERING
+- Key Subjects: Engineering Geology, Mechanics of Solids, Surveying, Soil Mechanics & Foundation Engineering, Structural Analysis, Concrete Technology, Transportation Engineering, Environmental Engineering, Reinforced Concrete Structures.

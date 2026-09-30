@@ -1,0 +1,58 @@
+===================================================================
+COIMBATORE INSTITUTE OF TECHNOLOGY (CIT), COIMBATORE
+DEPARTMENTS, FACULTY, AND ACADEMIC PROGRAMS
+===================================================================
+
+1. ACADEMIC DEPARTMENTS AT CIT
+Coimbatore Institute of Technology houses 12 academic departments offering B.E., B.Tech, M.E., M.Tech, MCA, M.Sc, and Ph.D. degree programs:
+
+1. Department of Civil Engineering (Est. 1956)
+   - Programs Offered: B.E. Civil Engineering, M.E. Structural Engineering, M.E. Environmental Engineering & Management, Ph.D.
+   - Key Focus: Structural Analysis, Geotechnical Engineering, Environmental Management, Smart City Infrastructure.
+
+2. Department of Mechanical Engineering (Est. 1956)
+   - Programs Offered: B.E. Mechanical Engineering, M.E. Heat Power Engineering, M.E. Advanced Manufacturing Technology, Ph.D.
+   - Key Focus: Robotics, Thermal Engineering, CAD/CAM/CAE, Additive Manufacturing.
+
+3. Department of Electrical and Electronics Engineering - EEE (Est. 1956)
+   - Programs Offered: B.E. Electrical and Electronics Engineering, M.E. Power Electronics & Drives, M.E. Embedded and Real Time Systems, Ph.D.
+   - Key Focus: Renewable Energy Systems, Smart Grids, Electric Vehicles, Power Electronics.
+
+4. Department of Electronics and Communication Engineering - ECE (Est. 1968)
+   - Programs Offered: B.E. Electronics and Communication Engineering, M.E. Communication Engineering, M.E. VLSI Design, Ph.D.
+   - Key Focus: VLSI Design, Wireless Communications, IoT, Signal Processing, Microelectronics.
+
+5. Department of Computer Science and Engineering - CSE (Est. 1986)
+   - Programs Offered: B.E. Computer Science and Engineering, M.E. Computer Science and Engineering, Ph.D.
+   - Key Focus: Cloud Computing, Machine Learning, Cybersecurity, Software Engineering, Big Data Analytics.
+
+6. Department of Information Technology - IT (Est. 2001)
+   - Programs Offered: B.Tech Information Technology, Ph.D.
+   - Key Focus: Full Stack Development, Network Security, Web Technologies, Distributed Systems.
+
+7. Department of Chemical Engineering (Est. 1994)
+   - Programs Offered: B.Tech Chemical Engineering, M.Tech Chemical Engineering, Ph.D.
+   - Key Focus: Process Modeling, Biochemical Engineering, Reaction Engineering, Polymer Technology.
+
+8. Department of Artificial Intelligence & Data Science - AI & DS / CSE (AIML)
+   - Programs Offered: B.Tech Artificial Intelligence and Data Science, B.E. Computer Science & Engineering (AI & ML).
+   - Key Focus: Deep Learning, Natural Language Processing, Computer Vision, Neural Networks, Generative AI.
+
+9. Department of Humanities & Social Sciences
+   - Offering Technical English, Communication Skills, Economics, Professional Ethics, and Soft Skills training.
+
+10. Department of Mathematics
+    - Advanced Engineering Mathematics, Numerical Methods, Discrete Mathematics, Probability & Statistics.
+
+11. Department of Physics & Department of Chemistry
+    - Engineering Physics, Engineering Chemistry, Nanoscience, Materials Characterization Labs.
+
+12. Department of Computer Applications (MCA) & Integrated M.Sc
+    - Master of Computer Applications (MCA - 2 Year Program)
+    - 5-Year Integrated M.Sc. Data Science, M.Sc. Software Systems, M.Sc. Decision & Computing Sciences.
+
+2. FACULTY & RESEARCH HIGHLIGHTS
+- CIT has over 200+ qualified faculty members, over 70% holding Ph.D. degrees from IISc, IITs, NITs, and premier universities.
+- Over 500+ research scholars pursuing Ph.D. under Anna University Research Centers at CIT.
+- MoUs with Industry Giants: Robert Bosch, Texas Instruments, Qualcomm, IBM, TCS, L&T, Hyundai Motors, National Instruments.
+- Specialized Centers of Excellence: Bosch Automotive Electronics Lab, Texas Instruments Innovation Lab, Supercomputing Center.

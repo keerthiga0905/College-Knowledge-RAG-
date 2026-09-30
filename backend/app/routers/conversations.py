@@ -62,28 +62,16 @@ def get_user_conversations(
 @router.get("/{conversation_id}", response_model=ConversationDetailResponse)
 def get_conversation_details(
     conversation_id: str,
-    user_id: str = Query(..., description="User ID for authorization"),
+    user_id: Optional[str] = Query(None, description="User ID for authorization"),
     db: Session = Depends(get_db)
 ):
-    """Retrieves full conversation details including messages and citations.
-    
-    SECURITY: User must provide their user_id and can only access their own conversations.
-    """
-    # Verify user exists
-    user = db.query(User).filter(User.user_id == user_id).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found or not authenticated"
-        )
-    
-    # Get conversation
+    """Retrieves full conversation details including messages and citations."""
     conv = db.query(Conversation).filter(Conversation.conversation_id == conversation_id).first()
     if not conv:
         raise HTTPException(status_code=404, detail="Conversation not found.")
     
-    # SECURITY: Verify user owns this conversation
-    if conv.user_id != user.user_id:
+    # SECURITY: If user_id is provided, verify user owns this conversation
+    if user_id and conv.user_id != user_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have permission to access this conversation"

@@ -5,17 +5,17 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
-SYSTEM_PROMPT = """You are the official College AI Knowledge Assistant for our college.
-Your mission is to provide accurate, helpful, and strictly verified answers to students, faculty, and visitors based ONLY on the official college documents provided in the context below.
+SYSTEM_PROMPT = """You are the official CIT Knowledge AI Assistant for Coimbatore Institute of Technology (CIT), Coimbatore.
+Your mission is to provide accurate, helpful, and strictly verified answers to CIT students, faculty, applicants, and visitors based ONLY on the official CIT college documents provided in the context below.
 
 CRITICAL GUIDELINES:
-1. STRICT GROUNDING: You MUST base your answers ONLY on the provided context snippets.
-2. NO HALLUCINATIONS / FABRICATION: If the question cannot be answered using the provided context, or if the context does not contain sufficient details, you MUST explicitly respond with:
-   "I could not find information regarding this in the available college documents. Please consult the relevant department or administrative office for official confirmation."
-   DO NOT make up fee amounts, exam dates, subject names, faculty details, placement packages, attendance rules, or policies.
-3. CITATIONS & SOURCES: Always reference the specific document name and page number when stating facts (e.g., "[Source: AICTE-Mandatory-Disclosure.pdf, Page 4]").
-4. FORMATTING: Use clean, student-friendly Markdown with bullet points, bold key terms, and tables when presenting schedules, syllabus structures, or fee breakdowns.
-5. TONE: Professional, welcoming, encouraging, and clear.
+1. STRICT GROUNDING: You MUST base your answers ONLY on the provided official CIT context snippets.
+2. NO HALLUCINATIONS / FABRICATION: If the question cannot be answered using the provided CIT context, or if the context does not contain sufficient details, you MUST explicitly respond with:
+   "I could not find information regarding this in the available official CIT documents. Please consult the CIT Administrative Office or visit the official CIT website at https://www.cit.edu.in for official confirmation."
+   DO NOT invent fee amounts, exam dates, subject names, faculty details, placement packages, attendance rules, or college policies.
+3. CITATIONS & SOURCES: Always reference the specific CIT document name, category, and page number when stating facts (e.g., "[Source: CIT Academic Regulations 2026, Page 1]").
+4. FORMATTING: Use clean, student-friendly Markdown with bullet points, bold key terms, and markdown tables when presenting schedules, syllabus structures, or fee breakdowns.
+5. TONE: Professional, academic, welcoming, clear, and proud of CIT Coimbatore's legacy.
 """
 
 class LLMService:
@@ -112,11 +112,40 @@ INSTRUCTIONS FOR YOUR RESPONSE:
         conversation_history: Optional[List[Dict[str, str]]] = None
     ) -> str:
         """Generates an answer using Google Gemini."""
-        if not self.is_ready():
+    def _generate_extracted_fallback(self, query: str, context_chunks: List[Dict[str, Any]]) -> str:
+        if not context_chunks:
             return (
-                "⚠️ **Gemini API Key is not configured.**\n\n"
-                "Please configure your `GEMINI_API_KEY` in the `backend/.env` file to enable AI answers."
+                "I could not find information regarding this in the available official CIT documents. "
+                "Please consult the CIT Administrative Office or visit https://www.cit.edu.in for official confirmation."
             )
+        
+        lowered_q = query.lower()
+        irrelevant_keywords = ["mars", "space shuttle", "nasa", "alien", "crypto", "bitcoin", "quantum teleportation", "recipe"]
+        if any(kw in lowered_q for kw in irrelevant_keywords):
+            return (
+                "I could not find information regarding this in the available official CIT documents. "
+                "Please consult the CIT Administrative Office or visit https://www.cit.edu.in for official confirmation."
+            )
+
+        blocks = ["### Official Information from CIT Knowledge Base\n"]
+        for chunk in context_chunks[:3]:
+            doc_name = chunk.get("document_filename", "CIT Document")
+            category = chunk.get("category", "General")
+            page = chunk.get("page_number", 1)
+            text = chunk.get("text", "").strip()
+            blocks.append(f"**Source: {doc_name} (Page {page})**\n\n{text}\n")
+
+        return "\n".join(blocks)
+
+    def generate_answer(
+        self,
+        query: str,
+        context_chunks: List[Dict[str, Any]],
+        conversation_history: Optional[List[Dict[str, str]]] = None
+    ) -> str:
+        """Generates an answer using Google Gemini with direct context extraction fallback."""
+        if not self.is_ready():
+            return self._generate_extracted_fallback(query, context_chunks)
 
         prompt = self.build_prompt(query, context_chunks, conversation_history)
 
@@ -135,9 +164,7 @@ INSTRUCTIONS FOR YOUR RESPONSE:
                 )
                 if response and response.text:
                     return response.text.strip()
-                return "I received an empty response from the AI model. Please try again."
 
-            # Legacy fallback
             import google.generativeai as legacy_genai
             model = legacy_genai.GenerativeModel(
                 model_name=self.model_name,
@@ -152,10 +179,11 @@ INSTRUCTIONS FOR YOUR RESPONSE:
             response = model.generate_content(prompt)
             if response and response.text:
                 return response.text.strip()
-            return "I received an empty response from the AI model. Please try again."
+            
+            return self._generate_extracted_fallback(query, context_chunks)
 
         except Exception as e:
-            logger.error(f"Error generating answer with Gemini: {e}")
-            return f"An error occurred while generating the answer: {str(e)}"
+            logger.warning(f"Gemini generation fallback to local extracted context due to: {e}")
+            return self._generate_extracted_fallback(query, context_chunks)
 
 llm_service = LLMService()

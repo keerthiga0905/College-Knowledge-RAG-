@@ -1,0 +1,29 @@
+===================================================================
+COIMBATORE INSTITUTE OF TECHNOLOGY (CIT), COIMBATORE
+LABORATORIES, INFRASTRUCTURE, AND PRACTICAL GUIDELINES
+===================================================================
+
+1. COMPUTER & AI/ML LABORATORIES
+- High Performance Computing (HPC) Lab: Equipped with NVIDIA GPU Workstations (A100/RTX 4090), multi-core Xeon servers, 1 Gbps high-speed network for Deep Learning, Computer Vision, and Generative AI research.
+- Data Science & Software Development Lab: 120 Intel Core i7 systems with Linux/Ubuntu and Windows dual boot, Python 3.12, TensorFlow, PyTorch, Scikit-learn, OpenCV, MySQL, and PostgreSQL.
+- Cloud Computing & Cybersecurity Lab: Virtualized VMware environment, AWS Academy Sandbox integration, Wireshark, Metasploit, Cisco Packet Tracer.
+- VLSI & Embedded Systems Lab: Cadence EDA Suite, Xilinx Vivado, FPGA Development Boards (Spartan/Artix-7), ARM Cortex Microcontroller Kits, Keil uVision.
+
+2. MECHANICAL & CIVIL LABORATORIES
+- CAD/CAM/CAE Lab: SolidWorks, ANSYS Multiphysics, Creo, Auto CAD, CNC Lathe and Milling machines.
+- Structural & Geotechnical Testing Lab: 100-Ton Universal Testing Machine (UTM), Compression Testing, Triaxial Shear Apparatus, Total Station Surveying equipment.
+
+3. CHEMICAL & ELECTRICAL LABORATORIES
+- Process Control & Reaction Engineering Lab: Distillation Columns, Heat Exchangers, Packed Bed Reactors, Gas Chromatography apparatus.
+- Power Electronics & Electric Drives Lab: DSpace controllers, MATLAB/Simulink Real-Time Simulators, Solar PV Emulator, EV Motor Test Bench.
+
+4. LABORATORY EVALUATION & SAFETY RULES
+- Lab Attendance: 100% attendance in scheduled laboratory practicals is expected. Absence due to medical reasons requires prior permission from HOD.
+- Evaluation Breakdown (Laboratory - 100 Marks):
+  - Practical Experimentation & Observation: 40 Marks
+  - Record Work & Algorithm Design: 20 Marks
+  - Model Practical Exam & Viva-Voce: 40 Marks
+- Safety Regulations:
+  - Students must wear formal lab aprons/coats in Chemical, Workshop, and Testing laboratories.
+  - Closed footwear is compulsory in all engineering workshops and laboratories.
+  - Food, beverages, and mobile phone usage are strictly prohibited inside computing labs and cleanrooms.

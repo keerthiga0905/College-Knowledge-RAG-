@@ -1,148 +1,222 @@
-# College AI Knowledge Base — RAG-Based College Information Assistant
+# CIT College Knowledge AI — Coimbatore Institute of Technology (CIT)
 
-A genuine **Retrieval-Augmented Generation (RAG)** college information assistant that allows students and faculty to enter their Name and Email, ask verified questions about college documents, and receive grounded answers backed by **ChromaDB** vector similarity search and **Google Gemini AI**.
+A complete end-to-end Machine Learning / NLP Retrieval-Augmented Generation (RAG) System built for **Coimbatore Institute of Technology (CIT), Coimbatore**.
 
----
-
-## 🌟 Key Features
-
-1. **Genuine RAG Pipeline**:
-   - **Document Processing**: Automatic text extraction and chunking of PDFs and Word documents across 5 core categories with page number tracking.
-   - **Dense Embeddings**: Generates embeddings via Google Gemini (`models/text-embedding-004`).
-   - **Vector Search**: Persistent ChromaDB vector store with cosine similarity ranking.
-   - **Strict Grounding & Hallucination Prevention**: Explicit system constraints instruct the model never to fabricate college fees, dates, rules, syllabus, or faculty details when not in the official context.
-   - **Interactive Citations**: Every answer highlights the exact source document, category, and page number with clickable citation snippets.
-
-2. **User System (Zero Friction)**:
-   - Students enter **Name** and **Email** (no passwords or college IDs to remember).
-   - Backend automatically creates or retrieves an internal `user_id`.
-   - Complete multi-user conversation history saved persistently in the database.
-
-3. **Modern Student-Friendly UI**:
-   - Built with **React** + **Vite** with modern dark glassmorphism theme, glowing indicators, responsive drawer sidebar, markdown formatting with tables and code blocks, and categorized suggested prompt cards.
-   - **Document Knowledge Base Library Inspector**: View indexing status and chunk breakdowns across all 63 college documents.
+This system ingests official CIT college documents (academic regulations, syllabi, department details, admission criteria, fee structures, placement statistics, library & hostel facilities, student guidelines, and campus events), indexes them into a high-performance vector database, and provides accurate, strictly-grounded answers with source citations via a modern React AI Chat interface.
 
 ---
 
-## 📂 Project Architecture
+## 🏗️ End-to-End System Architecture
 
+```text
+                 CIT OFFICIAL SOURCES & DOCUMENTS
+                         (PDF, TXT, DOCX, Web HTML)
+                                     │
+                                     ▼
+                      DATA COLLECTION & INGESTION
+                                     │
+                                     ▼
+                         DATA CLEANING & PARSING
+                         (PyMuPDF, python-docx, OCR)
+                                     │
+                                     ▼
+                            DOCUMENT CHUNKING
+                    (Configurable Chunk Size & Overlap)
+                                     │
+                                     ▼
+                             EMBEDDING MODEL
+                      (Local ONNX / all-MiniLM-L6-v2)
+                                     │
+                                     ▼
+                           CHROMADB VECTOR STORE
+                    (HNSW Index, Cosine Similarity)
+                                     │
+                                     │
+User Question ───────────────────────┤
+      │                              │
+      ▼                              ▼
+Query Embedding              Similarity Search
+      │                              │
+      └──────────────┬───────────────┘
+                     ▼
+            RELEVANT CIT CHUNKS
+                     │
+                     ▼
+            CONTEXT CONSTRUCTION
+                     │
+                     ▼
+           LLM GENERATION (GEMINI)
+                     │
+                     ▼
+             ANSWER + CITATIONS
+                     │
+                     ▼
+               CIT CHAT UI
 ```
-College_AI_Knowledge_Base/
-├── 01_College_information/       # Real college mandatory disclosures & OBE manuals
-├── 02_Syllabus/                  # Department syllabi (AIML, CSE, DS, Civil, Mech, etc.)
-├── 03_Academic_Calendar/         # Academic calendars & schedules
-├── 04_Lab_Manuals/               # Lab manuals (CC, DBE, DevOps, Java, AI-ML)
-├── 05_Fees_Placement_Funding/    # Fee structures (FRA) & placement brochures
+
+---
+
+## 🌟 Key Machine Learning & RAG Features
+
+1. **Strictly Grounded RAG Pipeline**:
+   Answers are generated exclusively from official CIT context. If an answer is not present in the ingested knowledge base (e.g. out-of-scope questions), the system explicitly states that the information was not found instead of hallucinating.
+
+2. **Official Source Citation**:
+   Every response contains verifiable citations detailing document title, page number, category, and reference link to official CIT sources.
+
+3. **Multi-Format Ingestion Pipeline**:
+   Supports PDF text extraction (PyMuPDF & PyPDF), DOCX parsing, TXT, Markdown, HTML, and image PDF fallback.
+
+4. **Dense Vector Embeddings & Similarity Search**:
+   Uses ChromaDB persistent vector database with 384-dimensional ONNX embeddings (`all-MiniLM-L6-v2`), performing cosine similarity search with domain-specific keyword reranking.
+
+5. **Dataset Management & Ingestion Manager**:
+   Admin interface allowing administrators to upload new PDFs/TXT documents, scrape web pages, re-index knowledge base embeddings, and inspect vector store status in real-time.
+
+---
+
+## 📁 Repository & Data Directory Structure
+
+```text
+College-AI-Knowledge-Base-Chatbot/
+│
+├── 01_College_information/        # CIT Overview, Governance, Departments & Facilities
+├── 02_Syllabus/                   # CIT Academic Regulations 2026, Syllabus & Curriculum
+├── 03_Academic_Calendar/          # CIT Academic Schedules, Exam Dates & Events
+├── 04_Lab_Manuals/                # CIT Laboratory Infrastructure & Safety Rules
+├── 05_Fees_Placement_Funding/     # CIT Fee Structure, Scholarships & Placement Stats
+│
+├── data/
+│   ├── raw/                       # Unprocessed CIT documents & raw web pages
+│   ├── cleaned/                   # Preprocessed and normalized text documents
+│   ├── processed/                 # Extracted text chunks with metadata
+│   └── metadata/                  # JSON metadata index of all CIT knowledge files
+│
 ├── backend/
 │   ├── app/
-│   │   ├── models/               # SQLAlchemy models (User, Conversation, Message, Document)
-│   │   ├── routers/              # FastAPI routers (auth, conversations, chat, documents)
-│   │   ├── schemas/              # Pydantic validation schemas
-│   │   ├── services/             # Document processor, Vector store, Embeddings, LLM, RAG
-│   │   ├── config.py             # Settings & Environment variables
-│   │   ├── database.py           # DB session & connection management
-│   │   └── main.py               # FastAPI entry point
-│   ├── data/                     # Persistent ChromaDB vector database directory
-│   ├── venv/                     # Python virtual environment
-│   ├── ingest.py                 # CLI batch document ingestion script
-│   ├── test_api.py               # Automated test suite
-│   ├── requirements.txt          # Python dependencies
-│   ├── .env.example              # Environment variables template
-│   └── .env                      # Local configuration file
+│   │   ├── config.py              # Application settings & RAG hyperparameters
+│   │   ├── database.py            # SQLite / PostgreSQL database connection
+│   │   ├── main.py                # FastAPI entrypoint & health checks
+│   │   ├── models/                # User, Conversation, Message & Document ORM models
+│   │   ├── routers/               # Auth, Chat, Conversations, Documents & Admin APIs
+│   │   └── services/
+│   │       ├── document_processor.py # Multi-format text extraction & chunking
+│   │       ├── embedding_service.py  # Local ONNX embedding generator
+│   │       ├── vector_store.py       # ChromaDB vector store search & reranking
+│   │       ├── llm_service.py        # Gemini LLM answer generation & fallback
+│   │       └── rag_service.py        # Core RAG orchestration pipeline
+│   ├── data/chroma_db/            # Persistent ChromaDB vector database index
+│   ├── college_ai.db              # SQLite relational database
+│   ├── ingest.py                  # Document ingestion script
+│   ├── requirements.txt           # Backend Python dependencies
+│   └── test_rag.py                # RAG pipeline test suite
+│
 ├── frontend/
 │   ├── src/
-│   │   ├── components/           # UI components (ChatArea, Sidebar, Header, Modals, etc.)
-│   │   ├── context/              # AuthContext for multi-user session state
-│   │   ├── services/             # API client connecting to FastAPI backend
-│   │   ├── App.jsx               # Main React application
-│   │   └── index.css             # Modern design tokens, glassmorphism & responsive CSS
-│   ├── package.json              # Frontend dependencies
-│   └── vite.config.js            # Vite configuration
-├── .gitignore
-└── README.md
+│   │   ├── App.jsx                # CIT Knowledge AI Chat UI & Dataset Manager Modal
+│   │   ├── App.css                # Premium CIT Dark Mode CSS Design System
+│   │   └── main.jsx               # React entrypoint
+│   └── package.json               # Frontend dependencies (React, Vite, Tailwind-free)
+│
+├── scripts/
+│   └── generate_cit_pdfs.py       # Utility to generate formatted CIT PDF documents
+│
+├── .env.example                   # Environment configuration template
+├── README.md                      # Project documentation
+└── test_diagnostic.py             # System diagnostic script
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## ⚡ Quick Start Guide
 
-### 1. Configure Backend Environment
+### 1. Prerequisites
+- Python 3.10+
+- Node.js 18+ & npm
 
-Open `backend/.env` (or copy `backend/.env.example` to `backend/.env`) and add your Google Gemini API key:
+### 2. Backend Setup
 
+```bash
+cd backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment (Windows)
+.\venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file
+cp .env.example .env
+```
+
+Edit `backend/.env` to configure your settings:
 ```env
-GEMINI_API_KEY=your_google_gemini_api_key_here
-DATABASE_URL=sqlite:///./college_ai.db
-CHROMA_PERSIST_DIR=./data/chroma_db
+GEMINI_API_KEY=your_gemini_api_key_here
 LLM_MODEL=gemini-1.5-flash
-EMBEDDING_MODEL=models/text-embedding-004
+EMBEDDING_MODEL=local
+CHROMA_PERSIST_DIR=./data/chroma_db
+CHROMA_COLLECTION_NAME=cit_knowledge_base
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=200
+TOP_K_RESULTS=6
 ```
 
-> 🔑 Get a free Gemini API key from [Google AI Studio](https://aistudio.google.com/).
+### 3. Ingest CIT Knowledge Base
 
----
+Run the ingestion script to parse all CIT documents and index vector embeddings into ChromaDB:
 
-### 2. Ingest the College Documents
-
-Run the ingestion script to process the documents from the 5 folders into ChromaDB:
-
-```powershell
-# From the workspace root:
-backend\venv\Scripts\python backend/ingest.py
+```bash
+python backend/ingest.py --reset
 ```
 
-Options:
-- `--dry-run`: Test document extraction and chunking without calling the embedding API.
-- `--reset`: Clear existing vector records and re-index from scratch.
+### 4. Run Backend Server
 
----
-
-### 3. Start the Backend Server
-
-```powershell
-# From workspace root:
-backend\venv\Scripts\uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 --reload
+```bash
+python -m uvicorn app.main:app --reload --port 8000
 ```
+API Documentation will be available at: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
 
-Backend API will run at:
-- **API Docs (Swagger)**: http://localhost:8000/api/docs
-- **Health Endpoint**: http://localhost:8000/api/health
+### 5. Frontend Setup & Launch
 
----
-
-### 4. Start the Frontend Application
-
-In a separate terminal:
-
-```powershell
+```bash
 cd frontend
+
+# Install packages
+npm install
+
+# Start Vite development server
 npm run dev
 ```
-
-Frontend application will run at:
-- **Web App**: http://localhost:5173
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 🧪 Automated Testing
+## 🧪 Verification & Testing
 
-Run the automated backend test suite:
+Run the automated test suite to verify end-to-end RAG retrieval, vector search, and API endpoints:
 
-```powershell
-backend\venv\Scripts\python backend/test_api.py
+```bash
+# Run system diagnostic
+python test_diagnostic.py
+
+# Run end-to-end RAG test suite
+python backend/test_rag.py
+
+# Run API endpoint integration test
+python backend/test_api.py
 ```
 
-This verifies:
-- API health check
-- Name + Email user registration and duplicate lookup
-- Conversation creation & history retrieval
-- RAG pipeline invocation
-- Database persistence
-
 ---
 
-## 🔒 Security & Data Integrity
+## 🏫 Official CIT Coimbatore Knowledge Coverage
 
-- API keys and secrets are loaded exclusively via environment variables and never exposed to the frontend or saved in git.
-- The 5 original document folders remain untouched and read-only.
-- Strict LLM prompt grounding ensures facts are derived solely from official college documents.
+The CIT knowledge base contains verified data across:
+- **Autonomous Governance**: Established 1956 by VRET, Autonomous status since 1987, NAAC 'A' grade.
+- **Academic Regulations 2026**: Minimum 75% attendance mandatory, condonation 65-74%, CBCS grading (O, A+, A, B+, B, C, RA).
+- **Engineering Syllabi**: CSE, AIML, ECE, EEE, Mechanical, Civil, Chemical, AI & Data Science curriculum.
+- **Placements**: 90%+ placement rate, Highest package 52 LPA, Average 7.5-9.5 LPA, Top recruiters (Amazon, Microsoft, Bosch, Texas Instruments, Qualcomm, TCS).
+- **Scholarships & Fees**: Govt First Generation Graduate scholarship, BC/MBC/SC/ST post-matric schemes, fee structures for aided and self-supporting streams.
+- **Campus Facilities**: Central Library, High Performance Computing (HPC) GPU labs, Men's & Women's Hostels, Rotaract Club, YUGAM Cultural Fest.

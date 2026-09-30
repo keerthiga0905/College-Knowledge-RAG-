@@ -150,6 +150,17 @@ class DocumentProcessor:
         pdf_path: str
     ) -> List[Dict[str, Any]]:
 
+        # Check for Git LFS pointer files or empty files
+        path_obj = Path(pdf_path)
+        if path_obj.exists() and path_obj.stat().st_size < 500:
+            try:
+                with open(pdf_path, "r", encoding="utf-8", errors="ignore") as f:
+                    header = f.read(50)
+                    if "git-lfs" in header or "version https" in header:
+                        return []
+            except Exception:
+                pass
+
         pages_content = []
 
         try:
@@ -375,6 +386,28 @@ class DocumentProcessor:
 
         return chunks
 
+    def extract_text_from_txt(
+        self,
+        txt_path: str
+    ) -> List[Dict[str, Any]]:
+        pages_content = []
+        try:
+            with open(txt_path, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+            cleaned = self.clean_text(content)
+            if cleaned:
+                pages_content.append(
+                    {
+                        "page_number": 1,
+                        "text": cleaned
+                    }
+                )
+        except Exception as error:
+            raise RuntimeError(
+                f"Failed to extract text from '{txt_path}': {error}"
+            )
+        return pages_content
+
     # ============================================================
     # PROCESS FILE
     # ============================================================
@@ -404,6 +437,12 @@ class DocumentProcessor:
         elif extension == ".docx":
 
             pages_data = self.extract_text_from_docx(
+                str(path)
+            )
+
+        elif extension in [".txt", ".md", ".json", ".html", ".htm"]:
+
+            pages_data = self.extract_text_from_txt(
                 str(path)
             )
 

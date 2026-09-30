@@ -41,12 +41,4 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# PDF and Document Files (LFS)
-*.pdf
-*.docx
-01_College_information/
-02_Syllabus/
-03_Academic_Calendar/
-04_Lab_Manuals/
-05_Fees_Placement_Funding/
 
