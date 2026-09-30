@@ -20,6 +20,8 @@ class MessageResponse(BaseModel):
     conversation_id: str
     role: str
     content: str
+    type: Optional[str] = "general"
+    entity: Optional[Dict[str, Any]] = None
     sources: Optional[List[Dict[str, Any]]] = None
     created_at: datetime
 
@@ -44,4 +46,6 @@ class ChatResponse(BaseModel):
     conversation_id: str
     user_message: MessageResponse
     assistant_message: MessageResponse
+    type: Optional[str] = "general"
+    entity: Optional[Dict[str, Any]] = None
     sources: List[SourceReference] = []

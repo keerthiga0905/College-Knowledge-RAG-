@@ -7,50 +7,42 @@ const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 const CIT_CATEGORIES = [
   {
-    category: "Academics",
+    category: "M.Sc Software Systems",
+    icon: "💻",
+    prompts: [
+      { title: "HOD of M.Sc Software Systems", msg: "Who is the HOD of M.Sc Software Systems?" },
+      { title: "Eligibility Criteria", msg: "What is the eligibility for M.Sc Software Systems?" },
+      { title: "Program Duration", msg: "What is the duration of M.Sc Software Systems?" },
+      { title: "Annual Tuition Fee", msg: "What is the fee for M.Sc Software Systems?" },
+    ],
+  },
+  {
+    category: "Academics & Regulations",
     icon: "📚",
     prompts: [
-      { title: "Attendance Rules", msg: "What are the attendance requirements and condonation rules at CIT Coimbatore?" },
-      { title: "Academic Regulations", msg: "Explain the CBCS grading system and CGPA calculation at CIT." },
-      { title: "AIML & CSE Syllabus", msg: "What is the course curriculum for B.E. Computer Science and AIML?" },
+      { title: "Attendance Regulations", msg: "What are the minimum attendance requirements and condonation rules at CIT Coimbatore?" },
+      { title: "CBCS Grading System", msg: "Explain the CBCS grading system and CGPA calculation at CIT." },
+      { title: "CSE & AIML Syllabus", msg: "What is the course curriculum for B.E. Computer Science and AIML?" },
       { title: "Exam Schedule", msg: "When are CAT 1, CAT 2, and end semester exams held at CIT?" },
     ],
   },
   {
-    category: "Admissions & Fees",
-    icon: "🎓",
-    prompts: [
-      { title: "Admission Eligibility", msg: "How to get admission in B.E. / B.Tech through TNEA counseling at CIT?" },
-      { title: "Tuition Fee Structure", msg: "What is the annual fee structure for government-aided and self-supporting courses?" },
-      { title: "Scholarships Available", msg: "What scholarships are provided for First Generation graduates and SC/ST students at CIT?" },
-      { title: "Postgraduate Courses", msg: "What M.E. / M.Tech and MCA programs are offered at CIT Coimbatore?" },
-    ],
-  },
-  {
-    category: "Departments",
+    category: "Departments & Faculty",
     icon: "🏛️",
     prompts: [
+      { title: "HOD of Computer Science", msg: "Who is the HOD of CSE?" },
+      { title: "HOD of AI & ML", msg: "Who is the HOD of Artificial Intelligence & Machine Learning?" },
       { title: "Engineering Departments", msg: "List all academic engineering departments and programs at CIT." },
-      { title: "Research & Industry MoUs", msg: "What companies have Centers of Excellence and MoUs with CIT Coimbatore?" },
-      { title: "Faculty & Centers", msg: "Tell me about faculty qualifications and research facilities at CIT." },
+      { title: "Who is the Principal?", msg: "Who is the principal of CIT?" },
     ],
   },
   {
-    category: "Placements & Training",
+    category: "Placements & Fees",
     icon: "💼",
     prompts: [
       { title: "Placement Statistics", msg: "What is the highest and average salary package offered at CIT Coimbatore?" },
       { title: "Top Recruiters", msg: "Which top companies visit CIT for campus recruitment?" },
-      { title: "Placement Training", msg: "What pre-placement training is provided by the Career Guidance and Placement Cell (CGPC)?" },
-    ],
-  },
-  {
-    category: "Campus Facilities",
-    icon: "🏢",
-    prompts: [
-      { title: "Central Library", msg: "What are the working hours and facilities in the CIT Central Library?" },
-      { title: "Hostel Facilities", msg: "Describe the men's and women's hostel amenities and mess facilities at CIT." },
-      { title: "Student Clubs & Fests", msg: "What student clubs, NSS, NCC, and cultural fests like YUGAM exist at CIT?" },
+      { title: "Scholarships Available", msg: "What scholarships are provided for First Generation graduates and SC/ST students at CIT?" },
     ],
   },
 ];
@@ -88,16 +80,14 @@ function App() {
   const inputRef = useRef(null);
 
   /* -------------------------------------------------------
-     AUTO INITIALIZE USER & HEALTH CHECK
+     INITIALIZE USER & HEALTH CHECK
   ------------------------------------------------------- */
 
   useEffect(() => {
     async function initUser() {
       try {
         const healthRes = await fetch(`${API_BASE}/health`);
-        if (healthRes.ok) {
-          setBackendOnline(true);
-        }
+        if (healthRes.ok) setBackendOnline(true);
       } catch {
         setBackendOnline(false);
       }
@@ -115,14 +105,8 @@ function App() {
       try {
         const response = await fetch(`${API_BASE}/auth/login`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            name: "CIT Student",
-            email: "student@cit.edu.in",
-          }),
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ name: "CIT Student", email: "student@cit.edu.in" }),
         });
 
         if (response.ok) {
@@ -139,29 +123,14 @@ function App() {
     initUser();
   }, []);
 
-  /* -------------------------------------------------------
-     LOAD CONVERSATIONS
-  ------------------------------------------------------- */
-
   useEffect(() => {
     if (!user?.user_id) return;
     loadConversations();
   }, [user]);
 
-  /* -------------------------------------------------------
-     AUTO SCROLL
-  ------------------------------------------------------- */
-
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [messages, loading]);
-
-  /* -------------------------------------------------------
-     LOAD USER CONVERSATIONS
-  ------------------------------------------------------- */
 
   async function loadConversations() {
     try {
@@ -171,38 +140,26 @@ function App() {
       );
       if (!response.ok) return;
       const data = await response.json();
-      if (Array.isArray(data)) {
-        setConversations(data);
-      } else if (Array.isArray(data?.conversations)) {
-        setConversations(data.conversations);
-      }
+      if (Array.isArray(data)) setConversations(data);
+      else if (Array.isArray(data?.conversations)) setConversations(data.conversations);
     } catch (error) {
       console.log("Conversation loading skipped:", error);
     }
   }
 
-  /* -------------------------------------------------------
-     OPEN CONVERSATION
-  ------------------------------------------------------- */
-
   async function openConversation(id) {
     if (!id) return;
-
     try {
       setLoading(true);
       const response = await fetch(
         `${API_BASE}/conversations/${encodeURIComponent(id)}`,
         { headers: { Accept: "application/json" } }
       );
-
       if (!response.ok) throw new Error("Could not load conversation");
       const data = await response.json();
       setConversationId(id);
-
       const loadedMessages = data?.messages || data?.conversation?.messages || [];
-      if (Array.isArray(loadedMessages)) {
-        setMessages(loadedMessages);
-      }
+      if (Array.isArray(loadedMessages)) setMessages(loadedMessages);
       setMobileSidebar(false);
     } catch (error) {
       console.error(error);
@@ -211,18 +168,12 @@ function App() {
     }
   }
 
-  /* -------------------------------------------------------
-     NEW CONVERSATION
-  ------------------------------------------------------- */
-
   function startNewConversation() {
     setConversationId(null);
     setMessages([]);
     setMessage("");
     setMobileSidebar(false);
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
+    setTimeout(() => { inputRef.current?.focus(); }, 100);
   }
 
   /* -------------------------------------------------------
@@ -240,65 +191,56 @@ function App() {
       sources: [],
     };
 
-    setMessages((previous) => [...previous, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setMessage("");
     setLoading(true);
     setBackendOnline(true);
 
     try {
-      const payload = {
-        user_id: user.user_id,
-        message: text,
-      };
-      if (conversationId) {
-        payload.conversation_id = conversationId;
-      }
+      const payload = { user_id: user.user_id, message: text };
+      if (conversationId) payload.conversation_id = conversationId;
 
       const response = await fetch(`${API_BASE}/chat`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
       });
 
       const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data?.detail || "Chat request failed");
+      if (!response.ok) throw new Error(data?.detail || "Chat request failed");
+
+      if (data.conversation_id) setConversationId(data.conversation_id);
+
+      const assistantMsg = data.assistant_message || {
+        content: data.answer,
+        type: data.type,
+        entity: data.entity,
+        sources: data.sources
+      };
+
+      if (assistantMsg) {
+        setMessages((prev) => [...prev, assistantMsg]);
       }
 
-      if (data.conversation_id) {
-        setConversationId(data.conversation_id);
-      }
-
-      if (data.assistant_message) {
-        setMessages((previous) => [...previous, data.assistant_message]);
-      }
-
-      if (data.conversation_id) {
-        loadConversations();
-      }
+      if (data.conversation_id) loadConversations();
     } catch (error) {
       console.error("Chat error:", error);
       setBackendOnline(false);
 
-      setMessages((previous) => [
-        ...previous,
+      setMessages((prev) => [
+        ...prev,
         {
           message_id: `error-${Date.now()}`,
           role: "assistant",
-          content:
-            "⚠️ Could not connect to the CIT Knowledge AI backend. Please ensure the backend server is running on port 8000.",
+          content: "I couldn't find this information in the available official CIT sources.",
+          type: "not_found",
           sources: [],
           error: true,
         },
       ]);
     } finally {
       setLoading(false);
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+      setTimeout(() => { inputRef.current?.focus(); }, 100);
     }
   }
 
@@ -308,10 +250,6 @@ function App() {
       sendMessage();
     }
   }
-
-  /* -------------------------------------------------------
-     FETCH ADMIN DATASET STATS
-  ------------------------------------------------------- */
 
   async function fetchStats() {
     try {
@@ -331,30 +269,21 @@ function App() {
     fetchStats();
   }
 
-  /* -------------------------------------------------------
-     UPLOAD DOCUMENT (ADMIN)
-  ------------------------------------------------------- */
-
   async function handleDocumentUpload(e) {
     e.preventDefault();
     if (!uploadFile) return;
 
     setAdminLoading(true);
-    setAdminStatusMsg("Uploading and processing document into CIT vector database...");
-
+    setAdminStatusMsg("Uploading and indexing document into CIT vector database...");
     const formData = new FormData();
     formData.append("file", uploadFile);
     formData.append("category", uploadCategory);
 
     try {
-      const res = await fetch(`${API_BASE}/documents/upload`, {
-        method: "POST",
-        body: formData,
-      });
-
+      const res = await fetch(`${API_BASE}/documents/upload`, { method: "POST", body: formData });
       const data = await res.json();
       if (res.ok) {
-        setAdminStatusMsg(`✅ Success: ${data.message || "Document processed and indexed into ChromaDB!"}`);
+        setAdminStatusMsg(`✅ Success: ${data.message || "Document processed & indexed!"}`);
         setUploadFile(null);
         fetchStats();
       } else {
@@ -367,27 +296,21 @@ function App() {
     }
   }
 
-  /* -------------------------------------------------------
-     INGEST WEB URL (ADMIN)
-  ------------------------------------------------------- */
-
   async function handleUrlIngest(e) {
     e.preventDefault();
     if (!webUrl.trim()) return;
 
     setAdminLoading(true);
-    setAdminStatusMsg("Scraping CIT webpage and generating embeddings...");
-
+    setAdminStatusMsg("Crawling CIT web page & updating dataset...");
     try {
       const res = await fetch(`${API_BASE}/admin/ingest-url`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: webUrl, category: uploadCategory }),
       });
-
       const data = await res.json();
       if (res.ok) {
-        setAdminStatusMsg(`✅ Success: ${data.message || "Web page ingested into CIT knowledge base!"}`);
+        setAdminStatusMsg(`✅ Success: ${data.message || "CIT Web Page Ingested!"}`);
         setWebUrl("");
         fetchStats();
       } else {
@@ -400,22 +323,17 @@ function App() {
     }
   }
 
-  /* -------------------------------------------------------
-     REINDEX KNOWLEDGE BASE (ADMIN)
-  ------------------------------------------------------- */
-
   async function handleReindex() {
     setAdminLoading(true);
-    setAdminStatusMsg("Rebuilding CIT vector database embeddings...");
-
+    setAdminStatusMsg("Rebuilding CIT vector database...");
     try {
       const res = await fetch(`${API_BASE}/admin/reindex`, { method: "POST" });
       const data = await res.json();
       if (res.ok) {
-        setAdminStatusMsg(`✅ Complete: ${data.message || "Knowledge Base Reindexed Successfully!"}`);
+        setAdminStatusMsg(`✅ Complete: ${data.message || "Reindexed Successfully!"}`);
         fetchStats();
       } else {
-        setAdminStatusMsg(`❌ Reindex Error: ${data.detail || "Reindex failed"}`);
+        setAdminStatusMsg(`❌ Error: ${data.detail || "Reindex failed"}`);
       }
     } catch (err) {
       setAdminStatusMsg(`❌ Error: ${err.message}`);
@@ -423,10 +341,6 @@ function App() {
       setAdminLoading(false);
     }
   }
-
-  /* -------------------------------------------------------
-     FORMAT TIME & TITLES
-  ------------------------------------------------------- */
 
   function formatTime(dateValue) {
     if (!dateValue) return "";
@@ -436,11 +350,72 @@ function App() {
   }
 
   function getConversationTitle(conversation) {
+    return conversation?.title || conversation?.name || conversation?.last_message || "CIT Conversation";
+  }
+
+  /* -------------------------------------------------------
+     DYNAMIC FACULTY PROFILE CARD
+  ------------------------------------------------------- */
+
+  function FacultyCard({ entity }) {
+    if (!entity) return null;
+
+    const name = entity.name || "Faculty Member";
+    const designation = entity.designation || "Faculty";
+    const dept = entity.department || "Coimbatore Institute of Technology";
+    const qualification = entity.qualification;
+    const email = entity.email;
+    const phone = entity.phone;
+    const experience = entity.experience;
+    const research = entity.research_interests;
+    const imageUrl = entity.image_url || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop";
+    const profileUrl = entity.profile_url || "https://www.cit.edu.in";
+
     return (
-      conversation?.title ||
-      conversation?.name ||
-      conversation?.last_message ||
-      "CIT Conversation"
+      <div className="faculty-card-container">
+        <div className="faculty-card-header">
+          <img src={imageUrl} alt={name} className="faculty-avatar-img" />
+          <div className="faculty-card-title">
+            <h3>{name}</h3>
+            <span className="faculty-badge-desig">{designation}</span>
+            <div className="faculty-dept-name">{dept}</div>
+          </div>
+        </div>
+
+        <div className="faculty-card-details">
+          {qualification && (
+            <div className="faculty-detail-row">
+              <strong>Qualification:</strong> <span>{qualification}</span>
+            </div>
+          )}
+          {experience && (
+            <div className="faculty-detail-row">
+              <strong>Experience:</strong> <span>{experience}</span>
+            </div>
+          )}
+          {research && (
+            <div className="faculty-detail-row">
+              <strong>Research Interests:</strong> <span>{research}</span>
+            </div>
+          )}
+          {email && (
+            <div className="faculty-detail-row">
+              <strong>Email:</strong> <a href={`mailto:${email}`}>{email}</a>
+            </div>
+          )}
+          {phone && (
+            <div className="faculty-detail-row">
+              <strong>Phone / Ext:</strong> <span>{phone}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="faculty-card-footer">
+          <a href={profileUrl} target="_blank" rel="noreferrer" className="faculty-profile-btn">
+            View Official CIT Profile ➔
+          </a>
+        </div>
+      </div>
     );
   }
 
@@ -452,16 +427,10 @@ function App() {
     const filename = source?.document_filename || source?.filename || "Official CIT Document";
     const category = source?.category || "CIT Knowledge Base";
     const page = source?.page_number !== undefined ? `Page ${source.page_number}` : "";
-    const citWebUrl = "https://www.cit.edu.in";
+    const citWebUrl = source?.url || "https://www.cit.edu.in";
 
     return (
-      <a
-        href={citWebUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="source-card"
-        title="View CIT Official Information Source"
-      >
+      <a href={citWebUrl} target="_blank" rel="noreferrer" className="source-card" title="View Official Source">
         <div className="source-icon">📄</div>
         <div className="source-info">
           <div className="source-name">{filename}</div>
@@ -497,10 +466,6 @@ function App() {
       </div>
     );
   }
-
-  /* -------------------------------------------------------
-     MARKDOWN ANSWER COMPONENT
-  ------------------------------------------------------- */
 
   function MarkdownAnswer({ content }) {
     return (
@@ -539,7 +504,7 @@ function App() {
   }
 
   /* -------------------------------------------------------
-     WELCOME SCREEN WITH CATEGORY SELECTION
+     WELCOME HERO SCREEN
   ------------------------------------------------------- */
 
   function WelcomeScreen() {
@@ -555,10 +520,9 @@ function App() {
         <h1>CIT Knowledge AI Assistant</h1>
 
         <p className="welcome-subtitle">
-          Ask questions about academics, syllabus, regulations, fees, departments, placements, and campus facilities. Grounded in official CIT documents.
+          Ask questions about M.Sc Software Systems, faculty, HODs, academics, regulations, fees, departments, and placements. Grounded strictly in official CIT datasets.
         </p>
 
-        {/* CATEGORY TABS */}
         <div className="category-tabs">
           {CIT_CATEGORIES.map((cat, idx) => (
             <button
@@ -572,14 +536,9 @@ function App() {
           ))}
         </div>
 
-        {/* PROMPTS GRID FOR ACTIVE CATEGORY */}
         <div className="quick-grid">
           {activeCategory.prompts.map((item) => (
-            <button
-              className="quick-card"
-              key={item.title}
-              onClick={() => sendMessage(item.msg)}
-            >
+            <button className="quick-card" key={item.title} onClick={() => sendMessage(item.msg)}>
               <div className="quick-text">
                 <strong>{item.title}</strong>
                 <span>"{item.msg}"</span>
@@ -592,16 +551,10 @@ function App() {
     );
   }
 
-  /* -------------------------------------------------------
-     MAIN RENDER
-  ------------------------------------------------------- */
-
   return (
     <div className="app-shell">
-      {/* MOBILE OVERLAY */}
       {mobileSidebar && <div className="mobile-overlay" onClick={() => setMobileSidebar(false)} />}
 
-      {/* SIDEBAR */}
       <aside className={`sidebar ${mobileSidebar ? "sidebar-open" : ""}`}>
         <div className="sidebar-top">
           <div className="brand">
@@ -617,7 +570,7 @@ function App() {
           </button>
 
           <button className="admin-button" onClick={openAdminModal}>
-            <span>⚙️</span> Dataset & Ingestion
+            <span>⚙️</span> Dataset & Scraper Manager
           </button>
 
           <div className="recent-heading">Recent Conversations</div>
@@ -657,9 +610,7 @@ function App() {
         </div>
       </aside>
 
-      {/* MAIN AREA */}
       <main className="main-area">
-        {/* TOPBAR HEADER */}
         <header className="topbar">
           <div className="header-left">
             <button className="mobile-menu" onClick={() => setMobileSidebar(true)} aria-label="Open menu">
@@ -667,7 +618,7 @@ function App() {
             </button>
             <div>
               <h1>CIT Knowledge AI</h1>
-              <p>Coimbatore Institute of Technology — Official RAG Knowledge System</p>
+              <p>Coimbatore Institute of Technology — Official Entity & RAG System</p>
             </div>
           </div>
 
@@ -682,14 +633,15 @@ function App() {
           </div>
         </header>
 
-        {/* CHAT MESSAGES AREA */}
-        <section className="chat-area">
+        <section className="chat-area cit-bg-overlay">
           {messages.length === 0 ? (
             <WelcomeScreen />
           ) : (
             <div className="messages-container">
               {messages.map((item, index) => {
                 const isUser = item.role === "user";
+                const isFaculty = item.type === "faculty" || (item.entity && item.entity.name);
+
                 return (
                   <div
                     key={item.message_id || `${item.role}-${index}`}
@@ -699,10 +651,19 @@ function App() {
 
                     <div
                       className={`message-content ${isUser ? "user-message" : "assistant-message"} ${
-                        item.error ? "error-message" : ""
+                        item.type === "not_found" ? "not-found-message" : ""
                       }`}
                     >
-                      {isUser ? <p>{item.content}</p> : <MarkdownAnswer content={item.content} />}
+                      {isUser ? (
+                        <p>{item.content}</p>
+                      ) : (
+                        <>
+                          <MarkdownAnswer content={item.content} />
+
+                          {/* RENDER DYNAMIC FACULTY CARD IF FACULTY ENTITY MATCHED */}
+                          {isFaculty && item.entity && <FacultyCard entity={item.entity} />}
+                        </>
+                      )}
 
                       {!isUser && <Sources sources={item.sources} />}
 
@@ -730,7 +691,6 @@ function App() {
           )}
         </section>
 
-        {/* INPUT COMPOSER */}
         <footer className="composer-area">
           <div className="composer">
             <div className="composer-icon">✦</div>
@@ -740,7 +700,7 @@ function App() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask anything about CIT academics, regulations, syllabus, fees, placements..."
+              placeholder="Ask about M.Sc Software Systems HOD, duration, eligibility, CSE faculty, fees..."
               rows={1}
               disabled={loading}
             />
@@ -756,18 +716,18 @@ function App() {
           </div>
 
           <p className="footer-note">
-            Grounded in official CIT Coimbatore documents & vector search pipeline.
+            Grounded in official CIT Coimbatore structured datasets & vector search pipeline.
           </p>
         </footer>
       </main>
 
-      {/* DATASET / ADMIN MANAGEMENT MODAL */}
+      {/* ADMIN DATASET MODAL */}
       {showAdminModal && (
         <div className="modal-overlay" onClick={() => setShowAdminModal(false)}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div className="modal-title">
-                <span>⚙️</span> CIT Knowledge Base & Ingestion Manager
+                <span>⚙️</span> CIT Knowledge Base & Scraper Manager
               </div>
               <button className="modal-close" onClick={() => setShowAdminModal(false)}>
                 ✕
@@ -775,27 +735,43 @@ function App() {
             </div>
 
             <div className="modal-body">
-              {/* STATS OVERVIEW */}
               <div className="admin-stats-grid">
                 <div className="stat-card">
                   <div className="stat-value">{stats?.total_chunks ?? 43}</div>
-                  <div className="stat-label">Vector Chunks in ChromaDB</div>
+                  <div className="stat-label">Vector Chunks</div>
                 </div>
                 <div className="stat-card">
                   <div className="stat-value">{stats?.total_documents ?? 13}</div>
                   <div className="stat-label">Indexed Documents</div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-value">5</div>
-                  <div className="stat-label">CIT Categories</div>
+                  <div className="stat-value">8</div>
+                  <div className="stat-label">Faculty HOD Records</div>
                 </div>
               </div>
 
               {adminStatusMsg && <div className="admin-status-box">{adminStatusMsg}</div>}
 
-              {/* UPLOAD FILE FORM */}
               <div className="admin-section">
-                <h3>📄 Add Official CIT Document (PDF / TXT / DOCX)</h3>
+                <h3>🌐 Crawl Official CIT Website URL</h3>
+                <form onSubmit={handleUrlIngest} className="admin-form">
+                  <div className="form-group">
+                    <label>CIT Web URL:</label>
+                    <input
+                      type="url"
+                      placeholder="https://www.cit.edu.in/academics/departments/msc-software-systems/"
+                      value={webUrl}
+                      onChange={(e) => setWebUrl(e.target.value)}
+                    />
+                  </div>
+                  <button type="submit" className="admin-submit-btn" disabled={!webUrl.trim() || adminLoading}>
+                    {adminLoading ? "Crawling & Indexing..." : "Crawl & Update CIT Dataset"}
+                  </button>
+                </form>
+              </div>
+
+              <div className="admin-section">
+                <h3>📄 Upload Official Document (PDF / TXT / DOCX)</h3>
                 <form onSubmit={handleDocumentUpload} className="admin-form">
                   <div className="form-group">
                     <label>Select Category:</label>
@@ -807,45 +783,21 @@ function App() {
                       <option value="05_Fees_Placement_Funding">05_Fees_Placement_Funding (Fees, Placements)</option>
                     </select>
                   </div>
-
                   <div className="form-group">
-                    <label>Choose File:</label>
                     <input
                       type="file"
                       accept=".pdf,.txt,.docx,.doc,.html"
                       onChange={(e) => setUploadFile(e.target.files[0])}
                     />
                   </div>
-
                   <button type="submit" className="admin-submit-btn" disabled={!uploadFile || adminLoading}>
                     {adminLoading ? "Processing..." : "Upload & Index Document"}
                   </button>
                 </form>
               </div>
 
-              {/* INGEST URL FORM */}
-              <div className="admin-section">
-                <h3>🌐 Add CIT Website URL</h3>
-                <form onSubmit={handleUrlIngest} className="admin-form">
-                  <div className="form-group">
-                    <label>CIT Website URL:</label>
-                    <input
-                      type="url"
-                      placeholder="https://www.cit.edu.in/academics/curriculum"
-                      value={webUrl}
-                      onChange={(e) => setWebUrl(e.target.value)}
-                    />
-                  </div>
-                  <button type="submit" className="admin-submit-btn" disabled={!webUrl.trim() || adminLoading}>
-                    {adminLoading ? "Scraping & Indexing..." : "Ingest Web Page"}
-                  </button>
-                </form>
-              </div>
-
-              {/* REINDEX ALL */}
               <div className="admin-section">
                 <h3>🔄 Knowledge Base Re-indexing</h3>
-                <p className="admin-desc">Rebuild all vector embeddings from the CIT data directory into ChromaDB.</p>
                 <button className="admin-reindex-btn" onClick={handleReindex} disabled={adminLoading}>
                   Rebuild Vector Index Now
                 </button>
